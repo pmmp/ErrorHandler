@@ -23,43 +23,8 @@ use function error_reporting;
 use function set_error_handler;
 
 final class ErrorUtils{
-	private const ERROR_STRINGS = [
-		0 => "EXCEPTION",
-		E_ERROR => "E_ERROR",
-		E_WARNING => "E_WARNING",
-		E_PARSE => "E_PARSE",
-		E_NOTICE => "E_NOTICE",
-		E_CORE_ERROR => "E_CORE_ERROR",
-		E_CORE_WARNING => "E_CORE_WARNING",
-		E_COMPILE_ERROR => "E_COMPILE_ERROR",
-		E_COMPILE_WARNING => "E_COMPILE_WARNING",
-		E_USER_ERROR => "E_USER_ERROR",
-		E_USER_WARNING => "E_USER_WARNING",
-		E_USER_NOTICE => "E_USER_NOTICE",
-		E_STRICT => "E_STRICT",
-		E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
-		E_DEPRECATED => "E_DEPRECATED",
-		E_USER_DEPRECATED => "E_USER_DEPRECATED"
-	];
-
 	private function __construct(){
 
-	}
-
-	/**
-	 * Converts an E_* error constant to its string representation.
-	 *
-	 * @param int $errorType
-	 *
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public static function errorTypeToString(int $errorType) : string{
-		if(!isset(self::ERROR_STRINGS[$errorType])){
-			throw new \InvalidArgumentException("Invalid error type $errorType");
-		}
-
-		return self::ERROR_STRINGS[$errorType];
 	}
 
 	/**
