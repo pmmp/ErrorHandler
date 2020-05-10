@@ -22,7 +22,7 @@ namespace pocketmine\errorhandler;
 use function error_reporting;
 use function set_error_handler;
 
-final class ErrorUtils{
+final class ErrorToExceptionHandler{
 	private function __construct(){
 
 	}
@@ -36,7 +36,7 @@ final class ErrorUtils{
 	 * @return bool
 	 * @throws \ErrorException
 	 */
-	public static function errorExceptionHandler(int $severity, string $message, string $file, int $line) : bool{
+	public static function handle(int $severity, string $message, string $file, int $line) : bool{
 		if((error_reporting() & $severity) !== 0){
 			throw new \ErrorException($message, 0, $severity, $file, $line);
 		}
@@ -47,7 +47,7 @@ final class ErrorUtils{
 	/**
 	 * Shorthand method to set the error-to-exception error handler.
 	 */
-	public static function setErrorExceptionHandler() : void{
-		set_error_handler([self::class, 'errorExceptionHandler']);
+	public static function set() : void{
+		set_error_handler([self::class, 'handle']);
 	}
 }
