@@ -72,7 +72,7 @@ final class ErrorUtils{
 	 * @throws \ErrorException
 	 */
 	public static function errorExceptionHandler(int $severity, string $message, string $file, int $line) : bool{
-		if(error_reporting() & $severity){
+		if((error_reporting() & $severity) !== 0){
 			throw new \ErrorException($message, 0, $severity, $file, $line);
 		}
 
