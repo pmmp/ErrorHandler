@@ -1,5 +1,5 @@
 # ErrorHandler
-[![Build Status](https://travis-ci.com/pmmp/ErrorHandler.svg?branch=master)](https://travis-ci.com/pmmp/ErrorHandler)
+![CI](https://github.com/buchwasa/ErrorHandler/workflows/CI/badge.svg?branch=master)
 
 This library contains some small utilities intended to make PHP's E_* errors more bearable.
 
