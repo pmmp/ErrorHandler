@@ -59,6 +59,7 @@ final class ErrorToExceptionHandler{
 		self::$lastSilencedError = null;
 	}
 
+	/** @phpstan-impure */
 	public static function getAndClearLastSilencedError() : ErrorRecord{
 		$result = self::getLastSilencedError();
 		self::clearLastSilencedError();
