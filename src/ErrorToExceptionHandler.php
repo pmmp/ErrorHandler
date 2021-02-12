@@ -27,6 +27,9 @@ final class ErrorToExceptionHandler{
 
 	}
 
+	/** @var ErrorRecord|null */
+	private static $lastSilencedError = null;
+
 	/**
 	 * @param int    $severity
 	 * @param string $message
@@ -41,7 +44,25 @@ final class ErrorToExceptionHandler{
 			throw new \ErrorException($message, 0, $severity, $file, $line);
 		}
 
+		self::$lastSilencedError = new ErrorRecord($severity, $message, $file, $line);
 		return true; //stfu operator
+	}
+
+	public static function getLastSilencedError() : ErrorRecord{
+		if(self::$lastSilencedError === null){
+			throw new \LogicException("No error has been generated");
+		}
+		return self::$lastSilencedError;
+	}
+
+	public static function clearLastSilencedError() : void{
+		self::$lastSilencedError = null;
+	}
+
+	public static function getAndClearLastSilencedError() : ErrorRecord{
+		$result = self::getLastSilencedError();
+		self::clearLastSilencedError();
+		return $result;
 	}
 
 	/**
