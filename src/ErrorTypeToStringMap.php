@@ -46,9 +46,6 @@ final class ErrorTypeToStringMap{
 	/**
 	 * Converts an E_* error constant to its string representation.
 	 *
-	 * @param int $errorType
-	 *
-	 * @return string
 	 * @throws \InvalidArgumentException
 	 */
 	public static function get(int $errorType) : string{

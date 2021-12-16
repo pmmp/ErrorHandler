@@ -32,12 +32,6 @@ final class ErrorToExceptionHandler{
 	private static $lastSilencedError = null;
 
 	/**
-	 * @param int    $severity
-	 * @param string $message
-	 * @param string $file
-	 * @param int    $line
-	 *
-	 * @return bool
 	 * @throws \ErrorException
 	 */
 	public static function handle(int $severity, string $message, string $file, int $line) : bool{
