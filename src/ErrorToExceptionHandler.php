@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace pocketmine\errorhandler;
 
 use function error_reporting;
+use function restore_error_handler;
 use function set_error_handler;
 
 final class ErrorToExceptionHandler{
@@ -71,5 +72,21 @@ final class ErrorToExceptionHandler{
 	 */
 	public static function set() : void{
 		set_error_handler([self::class, 'handle']);
+	}
+
+	/**
+	 * @phpstan-template TReturn
+	 * @phpstan-param \Closure() : TReturn $closure
+	 *
+	 * @phpstan-return TReturn
+	 * @throws \ErrorException
+	 */
+	public static function trap(\Closure $closure){
+		self::set();
+		try{
+			return $closure();
+		}finally{
+			restore_error_handler();
+		}
 	}
 }
