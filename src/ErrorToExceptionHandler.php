@@ -69,6 +69,10 @@ final class ErrorToExceptionHandler{
 	}
 
 	/**
+	 * Runs the given closure inside the error-to-exception handler.
+	 * Using this function guarantees that any error will cause an exception to be thrown, regardless of whether the
+	 * global exception handler has been set properly or not.
+	 *
 	 * @phpstan-template TReturn
 	 * @phpstan-param \Closure() : TReturn $closure
 	 *
@@ -85,6 +89,9 @@ final class ErrorToExceptionHandler{
 	}
 
 	/**
+	 * Same as trap(), but removes false from the set of possible return values. Mainly useful for PHPStan to unfalsify
+	 * the results of stdlib functions that normally return false when emitting warnings.
+	 *
 	 * @phpstan-template TReturn
 	 * @phpstan-param \Closure() : (TReturn|false) $closure
 	 *
