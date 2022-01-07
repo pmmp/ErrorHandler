@@ -83,4 +83,24 @@ final class ErrorToExceptionHandler{
 			restore_error_handler();
 		}
 	}
+
+	/**
+	 * @phpstan-template TReturn
+	 * @phpstan-param \Closure() : (TReturn|false) $closure
+	 *
+	 * @phpstan-return TReturn
+	 * @throws \ErrorException
+	 */
+	public static function trapAndRemoveFalse(\Closure $closure){
+		self::set();
+		try{
+			$result = $closure();
+			if($result === false){
+				throw new \LogicException("Block must not return false when no error occurred. Use trap() if the block may return false.");
+			}
+			return $result;
+		}finally{
+			restore_error_handler();
+		}
+	}
 }
