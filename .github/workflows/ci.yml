@@ -32,3 +32,6 @@ jobs:
 
     - name: Run PHPStan
       run: ./vendor/bin/phpstan analyze --no-progress
+
+    - name: PHPUnit tests
+      run: ./vendor/bin/phpunit tests/phpunit --fail-on-warning
