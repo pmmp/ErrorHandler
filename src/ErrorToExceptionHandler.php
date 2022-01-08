@@ -22,6 +22,8 @@ namespace pocketmine\errorhandler;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
+use const E_NOTICE;
+use const E_WARNING;
 
 final class ErrorToExceptionHandler{
 	private function __construct(){
@@ -69,9 +71,25 @@ final class ErrorToExceptionHandler{
 	}
 
 	/**
-	 * Runs the given closure inside the error-to-exception handler.
-	 * Using this function guarantees that any error will cause an exception to be thrown, regardless of whether the
-	 * global exception handler has been set properly or not.
+	 * Unconditionally converts the given types of E_* errors into exceptions, irrespective of the silence operator.
+	 * Used for trap() and trapAndRemoveFalse() to prevent @ operator or error_reporting() from interfering with
+	 * exception throws.
+	 *
+	 * @phpstan-return \Closure(int, string, string, int) : bool
+	 */
+	private static function handleNoticeAndWarning(int $severities) : \Closure{
+		return function(int $severity, string $message, string $file, int $line) use ($severities) : bool{
+			if(($severities & $severity) !== 0){
+				throw new \ErrorException($message, 0, $severity, $file, $line);
+			}
+
+			return false;
+		};
+	}
+
+	/**
+	 * Runs the given closure, and converts any E_WARNING or E_NOTICE it triggers to ErrorException, bypassing silence
+	 * operators or existing error handlers.
 	 *
 	 * @phpstan-template TReturn
 	 * @phpstan-param \Closure() : TReturn $closure
@@ -79,8 +97,8 @@ final class ErrorToExceptionHandler{
 	 * @phpstan-return TReturn
 	 * @throws \ErrorException
 	 */
-	public static function trap(\Closure $closure){
-		self::set();
+	public static function trap(\Closure $closure, int $levels = E_WARNING | E_NOTICE){
+		set_error_handler(self::handleNoticeAndWarning($levels));
 		try{
 			return $closure();
 		}finally{
@@ -98,8 +116,8 @@ final class ErrorToExceptionHandler{
 	 * @phpstan-return TReturn
 	 * @throws \ErrorException
 	 */
-	public static function trapAndRemoveFalse(\Closure $closure){
-		self::set();
+	public static function trapAndRemoveFalse(\Closure $closure, int $levels = E_WARNING | E_NOTICE){
+		set_error_handler(self::handleNoticeAndWarning($levels));
 		try{
 			$result = $closure();
 			if($result === false){
