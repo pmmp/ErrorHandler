@@ -23,9 +23,9 @@ jobs:
       id: composer-cache
       uses: actions/cache@v2
       with:
-        path: "~/.composer/cache"
-        key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
-        restore-keys: "php-${{ matrix.php }}-composer-"
+        path: "~/.cache/composer"
+        key: "php-${{ matrix.php }}-composer2-${{ hashFiles('**/composer.json') }}"
+        restore-keys: "php-${{ matrix.php }}-composer2-"
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction
