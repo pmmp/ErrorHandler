@@ -9,13 +9,16 @@ jobs:
     strategy:
       matrix:
         php: ['7.2', '7.3', '7.4', '8.0']
+
     name: PHP ${{ matrix.php }}
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup PHP
       uses: shivammathur/setup-php@2.9.0
       with:
         php-version: ${{ matrix.php }}
+
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
@@ -23,7 +26,9 @@ jobs:
         path: "~/.composer/cache"
         key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
         restore-keys: "php-${{ matrix.php }}-composer-"
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction
+
     - name: Run PHPStan
       run: ./vendor/bin/phpstan analyze --no-progress
