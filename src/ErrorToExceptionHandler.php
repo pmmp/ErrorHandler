@@ -92,7 +92,7 @@ final class ErrorToExceptionHandler{
 	 * operators or existing error handlers.
 	 *
 	 * @phpstan-template TReturn
-	 * @phpstan-param \Closure() : TReturn $closure
+	 * @phpstan-param (\Closure() : TReturn) $closure
 	 *
 	 * @phpstan-return TReturn
 	 * @throws \ErrorException
@@ -111,7 +111,7 @@ final class ErrorToExceptionHandler{
 	 * the results of stdlib functions that normally return false when emitting warnings.
 	 *
 	 * @phpstan-template TReturn
-	 * @phpstan-param \Closure() : (TReturn|false) $closure
+	 * @phpstan-param (\Closure() : (TReturn|false)) $closure
 	 *
 	 * @phpstan-return TReturn
 	 * @throws \ErrorException
