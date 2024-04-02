@@ -77,13 +77,9 @@ final class ErrorToExceptionHandler{
 	 *
 	 * @phpstan-return \Closure(int, string, string, int) : bool
 	 */
-	private static function handleNoticeAndWarning(int $severities) : \Closure{
-		return function(int $severity, string $message, string $file, int $line) use ($severities) : bool{
-			if(($severities & $severity) !== 0){
-				throw new \ErrorException($message, 0, $severity, $file, $line);
-			}
-
-			return false;
+	private static function throwAll() : \Closure{
+		return function(int $severity, string $message, string $file, int $line): bool{
+			throw new \ErrorException($message, 0, $severity, $file, $line);
 		};
 	}
 
@@ -98,7 +94,7 @@ final class ErrorToExceptionHandler{
 	 * @throws \ErrorException
 	 */
 	public static function trap(\Closure $closure, int $levels = E_WARNING | E_NOTICE){
-		set_error_handler(self::handleNoticeAndWarning($levels));
+		set_error_handler(self::throwAll(), $levels);
 		try{
 			return $closure();
 		}finally{
@@ -117,7 +113,7 @@ final class ErrorToExceptionHandler{
 	 * @throws \ErrorException
 	 */
 	public static function trapAndRemoveFalse(\Closure $closure, int $levels = E_WARNING | E_NOTICE){
-		set_error_handler(self::handleNoticeAndWarning($levels));
+		set_error_handler(self::throwAll(), $levels);
 		try{
 			$result = $closure();
 			if($result === false){
