@@ -66,8 +66,8 @@ final class ErrorToExceptionHandler{
 	/**
 	 * Shorthand method to set the error-to-exception error handler.
 	 */
-	public static function set() : void{
-		set_error_handler([self::class, 'handle']);
+	public static function set(int $levels = E_WARNING | E_NOTICE) : void{
+		set_error_handler([self::class, 'handle'], $levels);
 	}
 
 	/**
