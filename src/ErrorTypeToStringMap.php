@@ -33,7 +33,6 @@ final class ErrorTypeToStringMap{
 		E_USER_ERROR => "E_USER_ERROR",
 		E_USER_WARNING => "E_USER_WARNING",
 		E_USER_NOTICE => "E_USER_NOTICE",
-		E_STRICT => "E_STRICT",
 		E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
 		E_DEPRECATED => "E_DEPRECATED",
 		E_USER_DEPRECATED => "E_USER_DEPRECATED"
@@ -50,6 +49,11 @@ final class ErrorTypeToStringMap{
 	 */
 	public static function get(int $errorType) : string{
 		if(!isset(self::ERROR_STRINGS[$errorType])){
+			//E_STRICT constant is deprecated in PHP 8.4
+			//we can't use it without polluting global error state, so the value is hardcoded for BC instead
+			if(defined("E_STRICT") && $errorType === 2048){
+				return "E_STRICT";
+			}
 			throw new \InvalidArgumentException("Invalid error type $errorType");
 		}
 
